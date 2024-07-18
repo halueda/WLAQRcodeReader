@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-18 12:47:23 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-18 12:53:48 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -136,13 +136,14 @@
           const context = canvas.getContext('2d');
        
           const timer = setInterval(() => {
-              context.drawImage(video, 0, 0, width, height);
 	      if ( !video.playing ) {
-		// video.pause(); // ビデオの再生を停止
-		// video.currentTime = 0; // ビデオを最初に巻き戻す
+                drawRect(0, 0);
+		video.pause(); // ビデオの再生を停止
+		video.currentTime = 0; // ビデオを最初に巻き戻す
 		clearInterval(timer);
 		return;
 	      };
+              context.drawImage(video, 0, 0, width, height);
               const imageData = context.getImageData(0, 0, width, height);
               const code = jsQR(imageData.data, imageData.width, imageData.height);
               if (code) {
