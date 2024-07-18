@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-18 12:53:48 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-18 13:03:36 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -101,7 +101,7 @@
       };
 
       const video = document.querySelector('video');
-      video.playing = true; // TODO 初期値は読み取り状態ではない
+      video.playing = false; // TODO 初期値は読み取り状態ではない
 
       // TODO: 読み取りボタンが押されたら以下を起動する
       const toggleReader = () => {
@@ -129,6 +129,7 @@
       (async() => {
         try {
           const video = document.querySelector('video');
+	  video.style.display = "block";
           video.play();
 
           const { width, height } = constraints.video;
@@ -137,9 +138,10 @@
        
           const timer = setInterval(() => {
 	      if ( !video.playing ) {
-                drawRect(0, 0);
+                drawRect({x:0, y:0}, {x:0, y:0});
 		video.pause(); // ビデオの再生を停止
 		video.currentTime = 0; // ビデオを最初に巻き戻す
+		video.style.display = "none";
 		clearInterval(timer);
 		return;
 	      };
