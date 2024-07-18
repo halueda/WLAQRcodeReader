@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-18 10:41:31 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-18 10:46:51 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -60,7 +60,10 @@
               const imageData = context.getImageData(0, 0, width, height);
               const code = jsQR(imageData.data, imageData.width, imageData.height);
               if (code) {
-                document.querySelector('#result').textContent = code.data;
+		const readonlyInput = document.getElementById('result');
+		readonlyInput.value = code.data
+		readonlyInput.readOnly = true; // 読み取り専用に設定
+                //document.querySelector('#result').textContent = code.data;
                 drawRect(code.location.topLeftCorner, code.location.bottomRightCorner);                
               } else {
                 document.querySelector('#result').textContent = '';
