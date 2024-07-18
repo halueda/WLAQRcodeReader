@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- Time-stamp: <2024-07-18 10:41:31 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -9,7 +10,13 @@
     <script src="./jsQR.js"></script>
   </head>
   <body>
-    <div id="result" style="min-height: 20px;"></div>
+    <form>
+      <label for="fname">サービスマン氏名：</label>
+      <input type="text" id="fname" name="fname"><br><br>
+      <label for="result">QRcode：</label>
+      <input type="text" id="result" value="" style="min-height: 20px;" readonly><br><br>
+      <input type="submit" value="登録"> <!-- 送信先はまだない -->
+    </form>
     <div>
       <div style="position:relative;">
         <video style="position: absolute; z-index: -100;"></video>
