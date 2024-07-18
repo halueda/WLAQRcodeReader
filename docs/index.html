@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-18 10:46:51 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-18 11:27:01 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -10,12 +10,25 @@
     <script src="./jsQR.js"></script>
   </head>
   <body>
-    <form>
-      <label for="fname">サービスマン氏名：</label>
-      <input type="text" id="fname" name="fname"><br><br>
-      <label for="result">QRcode：</label>
-      <input type="text" id="result" value="" style="min-height: 20px;" readonly><br><br>
-      <input type="submit" value="登録"> <!-- 送信先はまだない -->
+    <!-- TODO: 縦にアラインする -->
+    <style>
+      .form-group {
+	  display: flex;
+	  flex-direction: column;
+	  align-items: flex-start;
+      }
+    </style>
+
+    <form id="myForm">
+      <div class="form-group">
+	<label for="fname">サービスマン氏名：</label>
+	<input type="text" id="fname" name="fname">
+      </div>
+      <div class="form-group">
+	<label for="result">QRcode：</label>
+	<input type="text" id="result" value="" style="min-height: 20px;" readonly>
+      </div>
+      <input type="submit" value="登録"> 
     </form>
     <div>
       <div style="position:relative;">
@@ -25,6 +38,46 @@
     </div>
 
     <script>
+      <!-- JSONでWebAPIにput -->
+      document.getElementById('myForm').addEventListener('submit', function(e) {
+	e.preventDefault(); // デフォルトのフォーム送信を防ぐ
+
+	// フォームデータを取得
+	var formData = new FormData(this);
+
+	// JSONオブジェクトに変換
+	var object = {};
+	formData.forEach(function(value, key){
+	  object[key] = value;
+	});
+	// <!-- TODO: 送信日時など自動的に設定する値を追加 -->
+	var json = JSON.stringify(object);
+
+	// PUTリクエストを送信
+	fetch('あなたのAPIエンドポイント', { // APIエンドポイントには実際のURLを使用してください <!-- TODO: 送信先はまだない -->
+	  method: 'PUT', // リクエストメソッド
+	  headers: {
+	    'Content-Type': 'application/json' // コンテンツタイプ
+	  },
+	  body: json // 送信するJSONデータ
+	}).then(response => {
+	  if (response.ok) {
+	    return response.json(); // レスポンスのJSONを取得
+	  }
+	  throw new Error('Network response was not ok.');
+	}).then(data => {
+	  console.log('Success:', data); // 成功時の処理
+	  const readonlyInput = document.getElementById('result'); <!-- QR-code をクリア -->
+	  readonlyInput.value = ''
+	  // TODO: 受付番号もクリアする
+	}).catch(error => {
+	  console.error('Error:', error); // TODO: エラー時の処理 
+	});
+      });
+    </script>
+
+    <script>
+      <!-- QR code reader -->
       const constraints = { 
         audio: false, 
         video: {
@@ -44,6 +97,7 @@
         overlay.style.height =`${y2 - y1}px`;
       };
 
+      // TODO: 読み取りボタンが押されたら以下を起動する
       (async() => {
         try {
           const stream = await navigator.mediaDevices.getUserMedia(constraints);
@@ -61,12 +115,13 @@
               const code = jsQR(imageData.data, imageData.width, imageData.height);
               if (code) {
 		const readonlyInput = document.getElementById('result');
-		readonlyInput.value = code.data
+		readonlyInput.value = code.data // TODO: MAC-addr だけ取り出す。 TODO: 可能ならWLAの世代を取り出す
 		readonlyInput.readOnly = true; // 読み取り専用に設定
                 //document.querySelector('#result').textContent = code.data;
-                drawRect(code.location.topLeftCorner, code.location.bottomRightCorner);                
+                drawRect(code.location.topLeftCorner, code.location.bottomRightCorner);
+		// TODO: ここで一旦止める
               } else {
-                document.querySelector('#result').textContent = '';
+                // document.querySelector('#result').textContent = ''; <!-- 最後の読み取りを維持する -->
               }
             }, 300);
         } catch(error) {
