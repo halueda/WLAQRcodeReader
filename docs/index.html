@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-18 13:34:36 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-18 13:49:15 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -123,22 +123,25 @@
 	}
       };
 
-      (async() => {
-        try {
-          const stream = await navigator.mediaDevices.getUserMedia(constraints);
-          const video = document.querySelector('video');
-          video.srcObject = stream;
-
-	  // startReader();
-        } catch(error) {
-          console.log('load error', error);
-        }
-      })();
+//      (async() => {
+//        try {
+//          const stream = await navigator.mediaDevices.getUserMedia(constraints);
+//          const video = document.querySelector('video');
+//          video.srcObject = stream;
+//
+//	  // startReader();
+//        } catch(error) {
+//          console.log('load error', error);
+//        }
+//      })();
 
       const startReader = () => {
 	(async() => {
           try {
+            const stream = await navigator.mediaDevices.getUserMedia(constraints);
             const video = document.querySelector('video');
+            video.srcObject = stream;
+
 	    video.style.display = "block";
             video.play();
 
@@ -151,6 +154,7 @@
                 drawRect({x:0, y:0}, {x:0, y:0}); // rectangle を消す
 		video.pause(); // ビデオの再生を停止
 		video.currentTime = 0; // ビデオを最初に巻き戻す
+		stream.getTracks().forEach(track => track.stop()); //カメラの利用を停止
 		video.style.display = "none"; // 非表示
 		clearInterval(timer);
 		return;
