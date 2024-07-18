@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-18 13:03:36 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-18 13:13:26 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -10,12 +10,15 @@
     <script src="./jsQR.js"></script>
   </head>
   <body>
-    <!-- TODO: 縦にアラインする -->
+    <!-- 縦にアラインする -->
     <style>
       .form-group {
 	  display: flex;
 	  flex-direction: column;
 	  align-items: flex-start;
+      }
+      html {
+	  font-size: 18px; /* デフォルトのフォントサイズを18pxに設定 */
       }
     </style>
 
@@ -31,7 +34,7 @@
       <input type="submit" value="登録"> 
     </form>
     <div>
-      <!-- ToDo: ここに Start/Stop のトグルボタンをつける -->
+      <!-- ここに Start/Stop のトグルボタンをつける -->
       <button onclick="toggleReader()">読み込み</button>
       <div style="position:relative;">
         <video style="position: absolute; z-index: -100;"></video>
@@ -101,14 +104,13 @@
       };
 
       const video = document.querySelector('video');
-      video.playing = false; // TODO 初期値は読み取り状態ではない
+      video.playing = false; // 初期値は読み取り状態ではない
 
-      // TODO: 読み取りボタンが押されたら以下を起動する
+      // 読み取りボタンが押されたら以下を起動する
       const toggleReader = () => {
         const video = document.querySelector('video');
 	video.playing = ! video.playing;
 	if (video.playing) {
-	  // TODO: start play
 	  startReader();
 	}
       };
@@ -119,29 +121,29 @@
           const video = document.querySelector('video');
           video.srcObject = stream;
 
-	  startReader();
+	  // startReader();
         } catch(error) {
           console.log('load error', error);
         }
       })();
 
       const startReader = () => {
-      (async() => {
-        try {
-          const video = document.querySelector('video');
-	  video.style.display = "block";
-          video.play();
+	(async() => {
+          try {
+            const video = document.querySelector('video');
+	    video.style.display = "block";
+            video.play();
 
-          const { width, height } = constraints.video;
-          const canvas = new OffscreenCanvas(width, height);
-          const context = canvas.getContext('2d');
-       
-          const timer = setInterval(() => {
+            const { width, height } = constraints.video;
+            const canvas = new OffscreenCanvas(width, height);
+            const context = canvas.getContext('2d');
+	    
+            const timer = setInterval(() => {
 	      if ( !video.playing ) {
-                drawRect({x:0, y:0}, {x:0, y:0});
+                drawRect({x:0, y:0}, {x:0, y:0}); // rectangle を消す
 		video.pause(); // ビデオの再生を停止
 		video.currentTime = 0; // ビデオを最初に巻き戻す
-		video.style.display = "none";
+		video.style.display = "none"; // 非表示
 		clearInterval(timer);
 		return;
 	      };
@@ -154,16 +156,15 @@
 		readonlyInput.readOnly = true; // 読み取り専用に設定
                 //document.querySelector('#result').textContent = code.data;
                 drawRect(code.location.topLeftCorner, code.location.bottomRightCorner);
-		// TODO: ここで一旦止める? 複数あったら確定ボタンで止めた方が良いかも
               } else {
                 // document.querySelector('#result').textContent = ''; <!-- 最後の読み取りを維持する -->
               }
             }, 300);
-        } catch(error) {
-          console.log('load error', error);
-        }
-      })();
-	};
+          } catch(error) {
+            console.log('load error', error);
+          }
+	})();
+      };
     </script>
   </body>
 </html>
