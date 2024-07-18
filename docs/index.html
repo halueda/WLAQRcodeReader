@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-18 13:13:26 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-18 13:18:09 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -10,15 +10,16 @@
     <script src="./jsQR.js"></script>
   </head>
   <body>
-    <!-- 縦にアラインする -->
     <style>
+      /* 縦にアラインする */
       .form-group {
 	  display: flex;
 	  flex-direction: column;
 	  align-items: flex-start;
       }
+      /* デフォルトのフォントサイズを設定 */
       html {
-	  font-size: 18px; /* デフォルトのフォントサイズを18pxに設定 */
+	  font-size: 20px; 
       }
     </style>
 
@@ -34,7 +35,8 @@
       <input type="submit" value="登録"> 
     </form>
     <div>
-      <!-- ここに Start/Stop のトグルボタンをつける -->
+      <!-- Start/Stop のトグルボタン -->
+      <br/>
       <button onclick="toggleReader()">読み込み</button>
       <div style="position:relative;">
         <video style="position: absolute; z-index: -100;"></video>
