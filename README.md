@@ -8,5 +8,5 @@ WLA QRcode を読み取るサンプル
 https://github.com/murasuke/js-QR-reader/tree/master
 
 ## Version
-0.0.0 Originalをコピペしただけ。
-0.1.0 QR-code reader として正しく動いた。
+- 0.0.0 Originalをコピペしただけ。
+- 0.1.0 QR-code reader として正しく動いた。
