@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-18 11:27:01 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-18 12:42:25 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -31,6 +31,8 @@
       <input type="submit" value="登録"> 
     </form>
     <div>
+      <!-- ToDo: ここに Start/Stop のトグルボタンをつける -->
+      <button onclick="toggleReader()">読み込み</button>
       <div style="position:relative;">
         <video style="position: absolute; z-index: -100;"></video>
         <div id="overlay" style="position: absolute; border: 1px solid #F00;"></div>
@@ -70,6 +72,7 @@
 	  const readonlyInput = document.getElementById('result'); <!-- QR-code をクリア -->
 	  readonlyInput.value = ''
 	  // TODO: 受付番号もクリアする
+	  // TODO: QR-readerを止める
 	}).catch(error => {
 	  console.error('Error:', error); // TODO: エラー時の処理 
 	});
@@ -97,12 +100,34 @@
         overlay.style.height =`${y2 - y1}px`;
       };
 
+      const video = document.querySelector('video');
+      video.playing = false; // 初期値は読み取り状態ではない
+
       // TODO: 読み取りボタンが押されたら以下を起動する
+      const toggleReader = () => {
+        const video = document.querySelector('video');
+	video.playing = ! video.playing;
+	if (video.playing) {
+	  // TODO: start play
+	  startReader();
+	}
+      };
+
       (async() => {
         try {
           const stream = await navigator.mediaDevices.getUserMedia(constraints);
           const video = document.querySelector('video');
           video.srcObject = stream;
+
+        } catch(error) {
+          console.log('load error', error);
+        }
+      })();
+
+      const starteReader = () => {
+      (async() => {
+        try {
+          const video = document.querySelector('video');
           video.play();
 
           const { width, height } = constraints.video;
@@ -111,6 +136,12 @@
        
           const timer = setInterval(() => {
               context.drawImage(video, 0, 0, width, height);
+	      if ( !video.playing ) {
+		// video.pause(); // ビデオの再生を停止
+		// video.currentTime = 0; // ビデオを最初に巻き戻す
+		clearInterval(timer);
+		return;
+	      };
               const imageData = context.getImageData(0, 0, width, height);
               const code = jsQR(imageData.data, imageData.width, imageData.height);
               if (code) {
@@ -119,7 +150,7 @@
 		readonlyInput.readOnly = true; // 読み取り専用に設定
                 //document.querySelector('#result').textContent = code.data;
                 drawRect(code.location.topLeftCorner, code.location.bottomRightCorner);
-		// TODO: ここで一旦止める
+		// TODO: ここで一旦止める? 複数あったら確定ボタンで止めた方が良いかも
               } else {
                 // document.querySelector('#result').textContent = ''; <!-- 最後の読み取りを維持する -->
               }
@@ -128,6 +159,7 @@
           console.log('load error', error);
         }
       })();
+	};
     </script>
   </body>
 </html>
