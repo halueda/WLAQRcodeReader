@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-19 18:12:26 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-19 18:33:33 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -61,15 +61,15 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
       // 合言葉は、 document.__global.auth に入れることにする
 
       // 最初に一発 ローカルストレージから読み込んで入れておく。
-      let auth = localStorage.getItem('auth');
-      if (!auth) { auth = ""; }
+      let auth = localStorage.getItem('auth') ?? '';
+      // if (!auth) { auth = ""; }
       document.__global = { "auth": auth };
 
       function auth_prompt() {
 	// 合言葉を聞く関数
 	// 入力ダイアログを表示 ＋ 入力内容を user に代入
-	let auth = window.prompt("合言葉を入力してください", document.__global.auth); // 初期値があるならそれも入れる
-	if (!auth) { auth = ""; }
+	let auth = window.prompt("合言葉を入力してください", document.__global.auth) ?? '' ; // 初期値があるならそれも入れる
+	// if (!auth) { auth = ""; }
 	localStorage.setItem('auth', auth);
 	document.__global.auth = auth
 	return auth;
@@ -150,7 +150,7 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	      console.log('Success:', data); // 成功時の処理 ⇒ どこか下の方に結果を見せる。デバッグも兼ねて
 	      // うまくいったので後始末
 	      const debugoutput = document.getElementById('debugoutput');
-	      debugoutput.value = JSON.stringify(data) + "\n" + debugoutput.value;
+	      debugoutput.value = JSON.stringify(data) + "\n" + (debugoutput?.value ?? '');
 	      // QR-code をクリア
 	      const readonlyInput = document.getElementById('MAC');
 	      readonlyInput.value = '';
