@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-18 13:52:30 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-19 16:55:35 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -22,21 +22,25 @@
 	  font-size: 20px; 
       }
 
-      /* input要素のフォントサイズを設定 */
-      /* input[type='text'] {
-	  font-size: 20px !important;
-      }*/
-
     </style>
 
+<!--
+UKETSUKE_NO: requestJSON.UKETSUKE_NO,
+MAC: requestJSON.MAC,
+SHAIN_MEI: requestJSON.SHAIN_MEI,
+-->
     <form id="myForm">
       <div class="form-group">
-	<label for="fname">サービスマン氏名：</label>
-	<input type="text" id="fname" name="fname">
+	<label for="SHAIN_MEI">サービスマン氏名：</label>
+	<input type="text" id="SHAIN_MEI" name="SHAIN_MEI">
       </div>
       <div class="form-group">
-	<label for="result">QRcode：</label>
-	<input type="text" id="result" value="" style="min-height: 20px;" readonly>
+	<label for="UKETSUKE_NO">受付番号：</label>
+	<input type="text" id="UKETSUKE_NO" name="UKETSUKE_NO">
+      </div>
+      <div class="form-group">
+	<label for="MAC">QRcode：</label>
+	<input type="text" id="MAC" value="" style="min-height: 20px;" readonly>
       </div>
       <input type="submit" value="登録"> 
     </form>
@@ -48,10 +52,32 @@
         <video style="position: absolute; z-index: -100;"></video>
         <div id="overlay" style="position: absolute; border: 1px solid #F00;"></div>
       </div>      
+    </div id="debugoutput" style="font-size: 8px;" >
+    <div>
     </div>
 
     <script>
-      <!-- JSONでWebAPIにput -->
+      // 合言葉関連
+      // 合言葉は、 document.__global.auth に入れることにする
+
+      // 最初に一発 ローカルストレージから読み込んで入れておく。
+      let auth = localStorage.getItem('auth');
+      if (!auth) { auth = ""; }
+      document.__global = { "auth": auth };
+
+      function auth_prompt() {
+	// 合言葉を聞く関数
+	// 入力ダイアログを表示 ＋ 入力内容を user に代入
+	let auth = window.prompt("合言葉を入力してください", document.__global.auth); // 初期値があるならそれも入れる
+	if (!auth) { auth = ""; }
+	localStorage.setItem('auth', auth);
+	document.__global.auth = auth
+	return auth;
+      }
+    </script>
+
+    <script>
+      // JSONでWebAPIにput 
       document.getElementById('myForm').addEventListener('submit', function(e) {
 	e.preventDefault(); // デフォルトのフォーム送信を防ぐ
 
@@ -67,27 +93,77 @@
 	var json = JSON.stringify(object);
 
 	// PUTリクエストを送信
-	fetch('あなたのAPIエンドポイント', { // APIエンドポイントには実際のURLを使用してください <!-- TODO: 送信先はまだない -->
-	  method: 'PUT', // リクエストメソッド
-	  headers: {
-	    'Content-Type': 'application/json' // コンテンツタイプ
-	  },
-	  body: json // 送信するJSONデータ
-	}).then(response => {
-	  if (response.ok) {
-	    return response.json(); // レスポンスのJSONを取得
-	  }
-	  throw new Error('Network response was not ok.');
-	}).then(data => {
-	  console.log('Success:', data); // 成功時の処理
-	  const readonlyInput = document.getElementById('result'); <!-- QR-code をクリア -->
-	  readonlyInput.value = ''
-	  // TODO: 受付番号もクリアする
-	  // TODO: QR-readerを止める
-	}).catch(error => {
-	  console.error('Error:', error); // TODO: エラー時の処理 
-	});
+
+	fetch_with_auth_prompt( 'https://i2uisu0dsg.execute-api.ap-northeast-1.amazonaws.com/items',
+				'PUT', json );
+//	fetch('https://i2uisu0dsg.execute-api.ap-northeast-1.amazonaws.com/items', { // APIエンドポイント
+//	  method: 'PUT', // リクエストメソッド
+//	  headers: {
+//	    'Content-Type': 'application/json' // コンテンツタイプ
+//	  },
+//	  body: json // 送信するJSONデータ
+//	}).then(response => {
+//	  if (response.ok) {
+//	    return response.json(); // レスポンスのJSONを取得
+//	  } else {
+//	    // ToDo: クレデンシャルがない/違うなら、ユーザに合言葉を聞く
+//	    throw new Error('Network response was not ok.');
+//	  }
+//	}).then(data => {
+//	  console.log('Success:', data); // 成功時の処理
+//	  const readonlyInput = document.getElementById('MAC'); <!-- QR-code をクリア -->
+//	  readonlyInput.value = ''
+//	  // TODO: 受付番号もクリアする
+//	  // TODO: QR-readerを止める
+//	}).catch(error => {
+//	  console.error('Error:', error); // TODO: エラー時の処理 
+//	});
       });
+
+
+      // 必要なら合言葉を聞いて、fetchを繰り返す
+      function fetch_with_auth_prompt( endpoint, method, body ) {
+	let state = 'again'
+	while ( state == 'again' ) {
+	   await fetch(endpoint, // APIエンドポイント
+		       { method: method, // リクエストメソッド
+			 headers: {
+			   'Content-Type': 'application/json',	 // コンテンツタイプ
+			   'Authorization': "Basic " + btoa( document.__global.auth ) // Basic 認証
+			 },
+			 body: body // 送信するJSONデータ
+		       })
+	    .then(response => {
+	      if (response.ok) {
+		return response.json(); // レスポンスのJSONを取得
+
+	      } else if ( response.status == 401 or response.status == 403 ) { // 認証失敗（そもそも情報がなかった）、認証不許可(パスワードが変わった）
+		auth_prompt();  // パスワードを聞く
+		state='again' ; // もう一度ループ
+	      } else {
+		state='fail';
+		throw new Error('Network response was not ok.');
+	      }
+	    })
+	    .then( data => { // レスポンスのJSON
+	      console.log('Success:', data); // 成功時の処理 ⇒ どこか下の方に結果を見せる。デバッグも兼ねて
+	      // うまくいったので後始末
+	      const debugoutput = document.getElementById('debugoutput');
+	      debugoutput.value = JSON.stringify(data) + "\n" + debugoutput.value;
+	      // QR-code をクリア
+	      const readonlyInput = document.getElementById('MAC');
+	      readonlyInput.value = '';
+	      // TODO: 受付番号もクリアする
+	      // TODO: QR-readerを止める
+	      state = 'done';
+	    })
+	    .catch(
+	      //     回復不能なのであきらめる
+	      state = 'fail'
+	      console.error()
+	    );
+	}
+      }
     </script>
 
     <script>
@@ -151,13 +227,13 @@
               const imageData = context.getImageData(0, 0, width, height);
               const code = jsQR(imageData.data, imageData.width, imageData.height);
               if (code) {
-		const readonlyInput = document.getElementById('result');
+		const readonlyInput = document.getElementById('MAC');
 		readonlyInput.value = code.data // TODO: MAC-addr だけ取り出す。 TODO: 可能ならWLAの世代を取り出す
 		readonlyInput.readOnly = true; // 読み取り専用に設定
-                //document.querySelector('#result').textContent = code.data;
+                //document.querySelector('#MAC').textContent = code.data;
                 drawRect(code.location.topLeftCorner, code.location.bottomRightCorner);
               } else {
-                // document.querySelector('#result').textContent = ''; <!-- 最後の読み取りを維持する -->
+                // document.querySelector('#MAC').textContent = ''; <!-- 最後の読み取りを維持する -->
               }
             }, 300);
           } catch(error) {
