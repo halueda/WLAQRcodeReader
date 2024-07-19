@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-19 16:55:35 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-19 17:26:00 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -122,7 +122,7 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 
 
       // 必要なら合言葉を聞いて、fetchを繰り返す
-      function fetch_with_auth_prompt( endpoint, method, body ) {
+      async function fetch_with_auth_prompt( endpoint, method, body ) {
 	let state = 'again'
 	while ( state == 'again' ) {
 	   await fetch(endpoint, // APIエンドポイント
