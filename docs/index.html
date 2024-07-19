@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-19 18:08:48 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-19 18:12:26 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -127,7 +127,7 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	while ( state == 'again' ) {
 	   await fetch(endpoint, // APIエンドポイント
 		       { method: method, // リクエストメソッド
-			 mode: 'no-cors', // 追加: CORS モードを 'no-cors' に設定
+			 //mode: 'no-cors', // 追加: CORS モードを 'no-cors' に設定
 			 headers: {
 			   'Content-Type': 'application/json',	 // コンテンツタイプ
 			   'Authorization': "Basic " + btoa( document.__global.auth ) // Basic 認証
