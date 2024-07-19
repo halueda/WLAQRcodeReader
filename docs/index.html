@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-19 19:31:19 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-19 19:42:15 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -120,11 +120,12 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	      }
 	    })
 	    .then( data => { // レスポンスのJSON
-	      console.log('Success:', data); // 成功時の処理 ⇒ どこか下の方に結果を見せる。デバッグも兼ねて
+	      console.log('Success:', data); // 成功時の処理
+	      // 結果を見せる
+	      const debugoutput = document.getElementById('debugoutput');
+	      debugoutput.innerText = JSON.stringify(data) + "\n" + (debugoutput?.innerText ?? '');
 	      alert('Success: ' + data);
 	      // うまくいったので後始末
-	      const debugoutput = document.getElementById('debugoutput');
-	      debugoutput.value = JSON.stringify(data) + "\n" + (debugoutput?.value ?? '');
 	      // QR-code をクリア
 	      const readonlyInput = document.getElementById('MAC');
 	      readonlyInput.value = '';
