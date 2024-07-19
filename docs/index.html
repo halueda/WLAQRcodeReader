@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-19 20:22:48 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-19 20:39:25 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -41,7 +41,6 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
       <div class="form-group">
 	<label for="MAC">QRcode：</label>
 	<input type="text" id="MAC" name="MAC" value=" " readonly>
-	<!-- input type="text" id="MAC" name="MAC" value=" " style="min-height: 20px;" readonly -->
       </div>
       <input type="submit" value="登録"> 
     </form>
@@ -209,7 +208,6 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 		const readonlyInput = document.getElementById('MAC');
 		readonlyInput.value = code.data // TODO: MAC-addr だけ取り出す。 TODO: 可能ならWLAの世代を取り出す
 		readonlyInput.readOnly = true; // 読み取り専用に設定
-                //document.querySelector('#MAC').textContent = code.data;
                 drawRect(code.location.topLeftCorner, code.location.bottomRightCorner);
               } else {
                 // document.querySelector('#MAC').textContent = ''; <!-- 最後の読み取りを維持する -->
