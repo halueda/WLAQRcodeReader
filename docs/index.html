@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-19 17:26:00 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-19 17:32:12 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -137,7 +137,7 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	      if (response.ok) {
 		return response.json(); // レスポンスのJSONを取得
 
-	      } else if ( response.status == 401 or response.status == 403 ) { // 認証失敗（そもそも情報がなかった）、認証不許可(パスワードが変わった）
+	      } else if ( response.status == 401 || response.status == 403 ) { // 認証失敗（そもそも情報がなかった）、認証不許可(パスワードが変わった）
 		auth_prompt();  // パスワードを聞く
 		state='again' ; // もう一度ループ
 	      } else {
