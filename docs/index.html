@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-19 19:01:27 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-19 19:31:19 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -53,8 +53,8 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
         <div id="overlay" style="position: absolute; border: 1px solid #F00;"></div>
       </div>      
     </div>
-    <div id="debugoutput" style="font-size: 8px;" >
-    </div>
+    <p id="debugoutput" style="font-size: 8px;" >
+    </p>
 
     <script>
       // 合言葉関連
@@ -62,14 +62,12 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 
       // 最初に一発 ローカルストレージから読み込んで入れておく。
       let auth = localStorage.getItem('auth') ?? '';
-      // if (!auth) { auth = ""; }
       document.__global = { "auth": auth };
 
       function auth_prompt() {
 	// 合言葉を聞く関数
 	// 入力ダイアログを表示 ＋ 入力内容を user に代入
 	let auth = window.prompt("合言葉を入力してください", document.__global.auth) ?? '' ; // 初期値があるならそれも入れる
-	// if (!auth) { auth = ""; }
 	localStorage.setItem('auth', auth);
 	document.__global.auth = auth
 	return auth;
@@ -80,10 +78,8 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
       // JSONでWebAPIにput 
       document.getElementById('myForm').addEventListener('submit', function(e) {
 	e.preventDefault(); // デフォルトのフォーム送信を防ぐ
-
 	// フォームデータを取得
 	var formData = new FormData(this);
-
 	// JSONオブジェクトに変換
 	var object = {};
 	formData.forEach(function(value, key){
@@ -93,31 +89,8 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	var json = JSON.stringify(object);
 
 	// PUTリクエストを送信
-
 	fetch_with_auth_prompt( 'https://i2uisu0dsg.execute-api.ap-northeast-1.amazonaws.com/items',
 				'PUT', json );
-//	fetch('https://i2uisu0dsg.execute-api.ap-northeast-1.amazonaws.com/items', { // APIエンドポイント
-//	  method: 'PUT', // リクエストメソッド
-//	  headers: {
-//	    'Content-Type': 'application/json' // コンテンツタイプ
-//	  },
-//	  body: json // 送信するJSONデータ
-//	}).then(response => {
-//	  if (response.ok) {
-//	    return response.json(); // レスポンスのJSONを取得
-//	  } else {
-//	    // ToDo: クレデンシャルがない/違うなら、ユーザに合言葉を聞く
-//	    throw new Error('Network response was not ok.');
-//	  }
-//	}).then(data => {
-//	  console.log('Success:', data); // 成功時の処理
-//	  const readonlyInput = document.getElementById('MAC'); <!-- QR-code をクリア -->
-//	  readonlyInput.value = ''
-//	  // TODO: 受付番号もクリアする
-//	  // TODO: QR-readerを止める
-//	}).catch(error => {
-//	  console.error('Error:', error); // TODO: エラー時の処理 
-//	});
       });
 
 
@@ -148,6 +121,7 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	    })
 	    .then( data => { // レスポンスのJSON
 	      console.log('Success:', data); // 成功時の処理 ⇒ どこか下の方に結果を見せる。デバッグも兼ねて
+	      alert('Success: ' + data);
 	      // うまくいったので後始末
 	      const debugoutput = document.getElementById('debugoutput');
 	      debugoutput.value = JSON.stringify(data) + "\n" + (debugoutput?.value ?? '');
@@ -162,6 +136,7 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	      //     回復不能なのであきらめる
 	      state = 'fail';
 	      console.error('Error:', error);
+	      alert('Error: ' + error);
 	    });
 	}
       }
