@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-29 17:00:24 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-29 17:15:20 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -96,7 +96,9 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	object.WLAVersion = object.QR.substr(30, 1);
 
 	// Now  2023-09-13T07:18:45.324Z
-	const dateStr = new Date().toISOString();
+	let nowDate = new Date();
+	nowDate.setHours(nowDate.getHours() + 9); // convert to JST
+	const dateStr = nowDate.toISOString();
 	object.KANRYO_DT = dateStr.substr(0,10);
 	object.KANRYO_TM = dateStr.substr(11,8);
 
