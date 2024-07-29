@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-29 17:40:06 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-29 17:44:58 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -38,16 +38,18 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	<label for="UKETSUKE_NO">受付番号：</label>
 	<input type="text" id="UKETSUKE_NO" name="UKETSUKE_NO" inputmode="tel">
       </div>
+      <br/>
+      <!-- Start/Stop のトグルボタン -->
+      <button onclick="toggleReader()">読み込み</button>
+      <br/>
+      <input type="submit" value="登録"> 
+      <br/>
       <div class="form-group">
 	<label for="QR">QRcode：</label>
 	<input type="text" id="QR" name="QR" value=" " readonly>
       </div>
-      <input type="submit" value="登録"> 
     </form>
     <div>
-      <!-- Start/Stop のトグルボタン -->
-      <br/>
-      <button onclick="toggleReader()">読み込み</button>
       <div style="position:relative;">
         <video style="position: absolute; z-index: -100;"></video>
         <div id="overlay" style="position: absolute; border: 1px solid #F00;"></div>
