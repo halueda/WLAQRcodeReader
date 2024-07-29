@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-29 17:15:20 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-29 17:28:09 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -80,6 +80,8 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	e.preventDefault(); // デフォルトのフォーム送信を防ぐ
 	// フォームデータを取得
 	var formData = new FormData(this);
+	// Readerは止める
+	stopReader();
 	// JSONオブジェクトに変換
 	var object = {};
 	formData.forEach(function(value, key){
@@ -163,10 +165,12 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	      alert('Success: ' + data);
 	      // うまくいったので後始末
 	      // QR-code をクリア
-	      const readonlyInput = document.getElementById('QR');
-	      readonlyInput.value = '';
+	      const qrcode = document.getElementById('QR');
+	      qrcode.value = '';
 	      // TODO: 受付番号もクリアする
-	      // TODO: QR-readerを止める
+	      const uketsuke_NO = document.getElementById('UKETSUKE_NO');
+	      uketsuke_NO.value = '';
+
 	      state = 'done';
 	    })
 	    .catch(error => {
@@ -212,6 +216,12 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	}
       }
 
+      // gracefulに止める
+      function stopReader () {
+        const video = document.querySelector('video');
+	video.playing = false;
+      }
+
       function startReader () {
 	(async() => {
           try {
@@ -241,9 +251,9 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
               const imageData = context.getImageData(0, 0, width, height);
               const code = jsQR(imageData.data, imageData.width, imageData.height);
               if (code) {
-		const readonlyInput = document.getElementById('QR');
-		readonlyInput.value = code.data
-		readonlyInput.readOnly = true; // 読み取り専用に設定
+		const qrcode = document.getElementById('QR');
+		qrcode.value = code.data
+		qrcode.readOnly = true; // 読み取り専用に設定
                 drawRect(code.location.topLeftCorner, code.location.bottomRightCorner);
               } else {
                 // document.querySelector('#MAC').textContent = ''; <!-- 最後の読み取りを維持する -->
