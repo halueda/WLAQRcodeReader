@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-19 20:39:25 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-29 15:58:38 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -168,15 +168,15 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
       video.playing = false; // 初期値は読み取り状態ではない
 
       // 読み取りボタンが押されたら以下を起動する
-      const toggleReader = () => {
+      function toggleReader () {
         const video = document.querySelector('video');
 	video.playing = ! video.playing;
 	if (video.playing) {
 	  startReader();
 	}
-      };
+      }
 
-      const startReader = () => {
+      function startReader () {
 	(async() => {
           try {
             const stream = await navigator.mediaDevices.getUserMedia(constraints);
