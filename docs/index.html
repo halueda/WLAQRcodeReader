@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-29 16:43:33 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-29 17:00:24 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -92,8 +92,8 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	//
 	//  **WiFi2 ラベル (QR2)**:  
 	//  AP-WH3E-00E93A47445B;8XvfnMXk;2
-	object.MAC = obj.QR.substr(8, 12);
-	object.WLAVersion = obj.QR.substr(30, 1);
+	object.MAC        = object.QR.substr(8, 12);
+	object.WLAVersion = object.QR.substr(30, 1);
 
 	// Now  2023-09-13T07:18:45.324Z
 	const dateStr = new Date().toISOString();
