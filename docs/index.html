@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-29 15:58:38 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-07-29 16:43:33 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -39,8 +39,8 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	<input type="text" id="UKETSUKE_NO" name="UKETSUKE_NO">
       </div>
       <div class="form-group">
-	<label for="MAC">QRcode：</label>
-	<input type="text" id="MAC" name="MAC" value=" " readonly>
+	<label for="QR">QRcode：</label>
+	<input type="text" id="QR" name="QR" value=" " readonly>
       </div>
       <input type="submit" value="登録"> 
     </form>
@@ -85,7 +85,41 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	formData.forEach(function(value, key){
 	  object[key] = value;
 	});
-	// <!-- TODO: 送信日時など自動的に設定する値を追加 -->
+
+	// QR
+	//  **アダプタラベル (QR1)**:  
+	//  AP-WH3E-00E93A47445B;8XvfnMXk;1
+	//
+	//  **WiFi2 ラベル (QR2)**:  
+	//  AP-WH3E-00E93A47445B;8XvfnMXk;2
+	object.MAC = obj.QR.substr(8, 12);
+	object.WLAVersion = obj.QR.substr(30, 1);
+
+	// Now  2023-09-13T07:18:45.324Z
+	const dateStr = new Date().toISOString();
+	object.KANRYO_DT = dateStr.substr(0,10);
+	object.KANRYO_TM = dateStr.substr(11,8);
+
+	// GPS ... 時間がかかるようなので一旦あきらめる
+	/*
+	const getCoords = async () => {
+          const pos = await new Promise((resolve, reject) => {
+            navigator.geolocation.getCurrentPosition(resolve, reject);
+          });
+    
+          return {
+            Longitude: pos.coords.longitude,
+            Latitude: pos.coords.latitude,
+          };
+	};
+
+	const coords = await getCoords();
+
+	object.Longitude = coords.Longitude;
+	object.Latitude = coords.Latitude;
+	*/
+
+	// 出力
 	var json = JSON.stringify(object);
 
 	// PUTリクエストを送信
@@ -127,7 +161,7 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
 	      alert('Success: ' + data);
 	      // うまくいったので後始末
 	      // QR-code をクリア
-	      const readonlyInput = document.getElementById('MAC');
+	      const readonlyInput = document.getElementById('QR');
 	      readonlyInput.value = '';
 	      // TODO: 受付番号もクリアする
 	      // TODO: QR-readerを止める
@@ -205,8 +239,8 @@ SHAIN_MEI: requestJSON.SHAIN_MEI,
               const imageData = context.getImageData(0, 0, width, height);
               const code = jsQR(imageData.data, imageData.width, imageData.height);
               if (code) {
-		const readonlyInput = document.getElementById('MAC');
-		readonlyInput.value = code.data // TODO: MAC-addr だけ取り出す。 TODO: 可能ならWLAの世代を取り出す
+		const readonlyInput = document.getElementById('QR');
+		readonlyInput.value = code.data
 		readonlyInput.readOnly = true; // 読み取り専用に設定
                 drawRect(code.location.topLeftCorner, code.location.bottomRightCorner);
               } else {
