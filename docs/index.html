@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-08-01 20:38:05 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-08-01 20:44:44 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -145,8 +145,6 @@
           });
 
           if (response.ok) {
-            //return response.json(); // レスポンスのJSONを取得
-            //console.log('登録成功:', data); // 成功時の処理
             // 結果を見せる
             //const debugoutput = document.getElementById('debugoutput');
             //debugoutput.innerText = JSON.stringify(data) + "\n" + (debugoutput?.innerText ?? '');
@@ -161,15 +159,17 @@
             uketsuke_NO.value = '';
             
             state = 'done';
-
+            break;
           } else if ( response.status == 401 || response.status == 403 ) { // 認証失敗（そもそも情報がなかった）、認証不許可(パスワードが変わった）
             let auth = auth_prompt();  // パスワードを聞く
             if (auth === null) {
               console.error('AuthCancell', '');
               alert('正しいパスワードを入れてください ');
               state='cancel';
+              break;
             } else {
               state='again' ; // もう一度ループ
+              continue;
             }
           } else {
             state='fail';
@@ -177,7 +177,7 @@
 
             console.error('Error:', error);
             alert('Error: ' + error);
-
+            break;
           }
         }
       }
