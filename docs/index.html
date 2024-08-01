@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-07-29 17:59:24 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-08-01 17:23:10 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>WLA QR Code Reader</title>
+    <title>WiFi QR Code Reader</title>
     <meta name="description" content="WLA QR Code Reader" />
     <script src="./jsQR.js"></script>
   </head>
@@ -24,23 +24,19 @@
 
     </style>
 
-<!--
-UKETSUKE_NO: requestJSON.UKETSUKE_NO,
-MAC: requestJSON.MAC,
-SHAIN_MEI: requestJSON.SHAIN_MEI,
--->
+    <h1>WiFi QR Code Reader</h1>
     <form id="myForm">
-      <div class="form-group">
-	<label for="SHAIN_MEI">サービスマン氏名：</label>
-	<input type="text" id="SHAIN_MEI" name="SHAIN_MEI">
-      </div>
+      <!-- div class="form-group" -->
+	<label for="SHAIN_MEI">ユーザID：</label><br/>
+	<input type="text" id="HOKOKU_TANTOSHA_CD" name="HOKOKU_TANTOSHA_CD" placeholder="担当者コード" size="6" inputmode="tel"> - <input type="text" id="HOKOKU_KAKUCHO_CD" name="HOKOKU_KAKUCHO_CD" placeholder="拡張コード" size="3" inputmode="tel">
+      <!-- /div --><br/>
       <div class="form-group">
 	<label for="UKETSUKE_NO">受付番号：</label>
-	<input type="text" id="UKETSUKE_NO" name="UKETSUKE_NO" inputmode="tel">
+	<input type="text" id="UKETSUKE_NO" name="UKETSUKE_NO" inputmode="tel" placeholder="受付番号" >
       </div>
       <div class="form-group">
 	<label for="QR">QRcode：</label>
-	<input type="text" id="QR" name="QR" value=" " onclick="toggleReader()" readonly>
+	<input type="text" id="QR" name="QR" value=" " onclick="toggleReader()" placeholder="タッチで読み込み" readonly >
       </div>
       <input type="submit" value="登録"> 
       <br/>
