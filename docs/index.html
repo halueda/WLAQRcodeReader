@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-08-01 17:23:10 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-08-01 18:26:15 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -28,7 +28,7 @@
     <form id="myForm">
       <!-- div class="form-group" -->
 	<label for="SHAIN_MEI">ユーザID：</label><br/>
-	<input type="text" id="HOKOKU_TANTOSHA_CD" name="HOKOKU_TANTOSHA_CD" placeholder="担当者コード" size="6" inputmode="tel"> - <input type="text" id="HOKOKU_KAKUCHO_CD" name="HOKOKU_KAKUCHO_CD" placeholder="拡張コード" size="3" inputmode="tel">
+	<input type="text" id="HOKOKU_TANTOSHA_CD" name="HOKOKU_TANTOSHA_CD" placeholder="担当者コード" size="12" inputmode="tel"> - <input type="text" id="HOKOKU_KAKUCHO_CD" name="HOKOKU_KAKUCHO_CD" placeholder="拡張コード" size="6" inputmode="tel">
       <!-- /div --><br/>
       <div class="form-group">
 	<label for="UKETSUKE_NO">受付番号：</label>
@@ -36,7 +36,7 @@
       </div>
       <div class="form-group">
 	<label for="QR">QRcode：</label>
-	<input type="text" id="QR" name="QR" value=" " onclick="toggleReader()" placeholder="タッチで読み込み" readonly >
+	<input type="text" id="QR" name="QR" value="" onclick="toggleReader()" placeholder="タッチで読み込み" readonly >
       </div>
       <input type="submit" value="登録"> 
       <br/>
