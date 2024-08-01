@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-08-01 20:10:23 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-08-01 20:17:50 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -150,7 +150,7 @@
                 // 結果を見せる
                 //const debugoutput = document.getElementById('debugoutput');
                 //debugoutput.innerText = JSON.stringify(data) + "\n" + (debugoutput?.innerText ?? '');
-                alert('登録成功: ' + data);
+                alert('登録成功: ' + response.json());
                 // うまくいったので後始末
                 // QR-code をクリア
                 const qrcode = document.getElementById('QR');
