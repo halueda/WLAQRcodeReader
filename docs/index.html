@@ -249,7 +249,9 @@
               };
               context.drawImage(video, 0, 0, width, height);
               const imageData = context.getImageData(0, 0, width, height);
-              const code = jsQR(imageData.data, imageData.width, imageData.height);
+              const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                     inversionAttempts: "dontInvert",
+                  });      
               if (code) {
                 const qrcode = document.getElementById('QR');
                 qrcode.value = code.data
