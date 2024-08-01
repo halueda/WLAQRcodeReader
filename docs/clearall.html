@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LocalStorage Clear All</title>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const displayKeys = () => {
+                const keysElement = document.getElementById('keys');
+                keysElement.innerHTML = ''; // Clear previous keys
+                for (let i = 0; i < localStorage.length; i++) {
+                    const key = localStorage.key(i);
+                    const value = localStorage.getItem(key);
+                    const listItem = document.createElement('li');
+                    listItem.textContent = `${key}: ${value}`;
+                    keysElement.appendChild(listItem);
+                }
+            };
+
+            document.getElementById('clearAll').addEventListener('click', function() {
+                localStorage.clear();
+                displayKeys();
+                alert('localStorageの内容がすべて消去されました。');
+            });
+
+            displayKeys(); // Display keys on page load
+        });
+    </script>
+</head>
+<body>
+    <h1>LocalStorage Clear All</h1>
+    <h2>現在のLocalStorageの内容:</h2>
+    <ul id="keys"></ul>
+    <button id="clearAll">Clear All</button>
+</body>
+</html>
