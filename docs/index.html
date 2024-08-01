@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-08-01 20:06:28 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-08-01 20:10:23 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -167,8 +167,9 @@
                   console.error('AuthCancell', '');
                   alert('正しいパスワードを入れてください ');
                   state='cancel';
+                } else {
+                  state='again' ; // もう一度ループ
                 }
-                state='again' ; // もう一度ループ
               } else {
                 state='fail';
                 //throw new Error('Network response was not ok.');
