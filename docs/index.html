@@ -21,6 +21,11 @@
       * {
           font-size: 20px; 
       }
+      /* カメラを拡大する */
+      .camera {
+	      transform: scale(3.0);
+	      transform-origin: 0% 0% 0px;
+      }
 
     </style>
 
@@ -41,7 +46,7 @@
       <input type="submit" value="登録"> 
       <br/>
     </form>
-    <div>
+    <div class="camera">
       <br/>
       <div style="position:relative;">
         <video style="position: absolute; z-index: -100;"></video>
