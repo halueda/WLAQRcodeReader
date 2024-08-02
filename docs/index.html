@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-08-01 20:44:44 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-08-02 22:33:45 UedaHaruyasu上田晴康@SCR-00105136> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -20,6 +20,11 @@
       /* デフォルトのフォントサイズを設定 */
       * {
           font-size: 20px; 
+      }
+      /* カメラを拡大する */
+      .camera {
+	  transform: scale(3.0);
+	  transform-origin: 0% 0% 0px;
       }
 
     </style>
@@ -43,7 +48,7 @@
     </form>
     <div>
       <br/>
-      <div style="position:relative;">
+      <div class="camera" style="position:relative;">
         <video style="position: absolute; z-index: -100;"></video>
         <div id="overlay" style="position: absolute; border: 1px solid #F00;"></div>
       </div>      
