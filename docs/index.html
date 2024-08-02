@@ -48,7 +48,7 @@
     </form>
     <div >
       <br/>
-      <div style="position:relative;" class="camera">
+      <div style="position:relative;">
         <video style="position: absolute; z-index: -100;"></video>
         <div id="overlay" style="position: absolute; border: 1px solid #F00;"></div>
       </div>      
@@ -194,8 +194,8 @@
         audio: false, 
         video: {
           facingMode: 'environment', 
-          width: 100, 
-          height: 100, 
+          width: 500, 
+          height: 500, 
       }};
 
       const drawRect = (topLeft, bottomRight) => {
