@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-08-02 22:33:45 UedaHaruyasu上田晴康@SCR-00105136> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-08-05 10:15:26 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -7,6 +7,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>WiFi QR Code Reader</title>
     <meta name="description" content="WLA QR Code Reader" />
+    <!--link rel="icon" href="/favicon.ico" sizes="32x32"--><!-- 32×32 -->
+    <link rel="icon" href="./favicon.ico" >
+    <!-- link rel="icon" href="/icon.svg" type="image/svg+xml" -->
+    <!-- link rel="apple-touch-icon" href="/apple-touch-icon.png"--><!-- 180×180 -->
+    <link rel="manifest" href="./manifest.webmanifest">
     <script src="./jsQR.js"></script>
   </head>
   <body>
@@ -21,11 +26,11 @@
       * {
           font-size: 20px; 
       }
-      /* カメラを拡大する */
-      .camera {
-	  transform: scale(3.0);
-	  transform-origin: 0% 0% 0px;
-      }
+      /* カメラを拡大する ⇒ 表示は大きくなるが、視野は変わらないし、どうしてもずれるので使わないことにした*/
+      /* .no-camera {
+	      transform: scale(1.0);
+	      transform-origin: 0% 0% 0px;
+      } */
 
     </style>
 
@@ -46,8 +51,7 @@
       <input type="submit" value="登録"> 
       <br/>
     </form>
-    <div>
-      <br/>
+    <div >
       <div class="camera" style="position:relative;">
         <video style="position: absolute; z-index: -100;"></video>
         <div id="overlay" style="position: absolute; border: 1px solid #F00;"></div>
@@ -107,7 +111,7 @@
         object.KANRYO_DT = dateStr.substr(0,10);
         object.KANRYO_TM = dateStr.substr(11,8);
 
-        // GPS ... 時間がかかるようなので一旦あきらめる
+        // GPS ... 時間がかかるようなので一旦あきらめる。このページを開いている間は、ずっと監視していて、大域変数に最後の値をコピーし、使う方はノーチェックで使うことにする
         /*
         const getCoords = async () => {
           const pos = await new Promise((resolve, reject) => {
@@ -194,8 +198,8 @@
         audio: false, 
         video: {
           facingMode: 'environment', 
-          width: 500, 
-          height: 500, 
+          width: 1500, 
+          height: 1500, 
       }};
 
       const drawRect = (topLeft, bottomRight) => {
@@ -254,7 +258,9 @@
               };
               context.drawImage(video, 0, 0, width, height);
               const imageData = context.getImageData(0, 0, width, height);
-              const code = jsQR(imageData.data, imageData.width, imageData.height);
+              const code = jsQR(imageData.data, imageData.width, imageData.height, {
+                     inversionAttempts: "dontInvert",
+                  });      
               if (code) {
                 const qrcode = document.getElementById('QR');
                 qrcode.value = code.data
@@ -263,7 +269,7 @@
               } else {
                 // document.querySelector('#MAC').textContent = ''; <!-- 最後の読み取りを維持する -->
               }
-            }, 300);
+            }, 30);
           } catch(error) {
             console.log('load error', error);
           }
