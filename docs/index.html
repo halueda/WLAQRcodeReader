@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-08-06 13:41:27 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-08-06 13:44:07 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -105,19 +105,19 @@
         var mes = "";
 
         if ( ! object["HOKOKU_TANTOSHA_CD"] ) {
-          mes = mes + "担当者コードを入力してください\n";
+          mes = mes + "担当者コードを入力してください。\n";
         }
 
         if ( ! object["HOKOKU_KAKUCHO_CD"] ) {
-          mes = mes + "拡張コードを入力してください\n";
+          mes = mes + "拡張コードを入力してください。\n";
         }
         
         if ( ! object["UKETSUKE_NO"] ) {
-          mes = mes + "受付番号を入力してください\n";
+          mes = mes + "受付番号を入力してください。\n";
         }
 
         if ( ! object["QR"] ) {
-          mes = mes + "QRコードが読めていません\n";
+          mes = mes + "QRコードが読めていません。\n";
         }
 
         if (mes) {
