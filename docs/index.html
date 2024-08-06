@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-08-05 18:20:20 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-08-06 13:27:16 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -52,7 +52,7 @@
       </div>
       <div class="form-group">
         <label for="QR">QRcode：</label>
-        <input type="text" id="QR" name="QR" value="" onclick="toggleReader()" placeholder="タッチで読み込み" size="25" readonly >
+        <input type="text" id="QR" name="QR" value="" onclick="toggleReader()" placeholder="タッチで読み込み" size="27" readonly >
       </div>
       <input type="submit" value="登録"> 
       <br/>
@@ -95,6 +95,30 @@
         var formData = new FormData(this);
         // Readerは止める
         stopReader();
+	// データが足りてなければエラー
+        var mes = "";
+
+        if (formData["HOKOKU_TANTOSHA_CD"] == "") {
+          mes = mes + "担当者コードを入力してください\n";
+        }
+
+        if (formData["HOKOKU_KAKUCHO_CD"] == "") {
+          mes = mes + "拡張コードを入力してください\n";
+        }
+        
+        if (formData["UKETSUKE_NO"] == "") {
+          mes = mes + "受付番号を入力してください\n";
+        }
+
+        if (formData[QR] == "") {
+          mes = mes + "QRコードが読めていません\n";
+        }
+
+        if (mes) {
+          alaert(mes);
+          return;
+        }
+
         // JSONオブジェクトに変換
         var object = {};
         formData.forEach(function(value, key){
