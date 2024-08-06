@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Time-stamp: <2024-08-06 13:27:16 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
+<!-- Time-stamp: <2024-08-06 13:34:49 ueda@SCR-00103236> -*- mode: real-auto-save; -*- -->
 
 <html lang="ja">
   <head>
@@ -95,22 +95,28 @@
         var formData = new FormData(this);
         // Readerは止める
         stopReader();
+        // JSONオブジェクトに変換
+        var object = {};
+        formData.forEach(function(value, key){
+          object[key] = value;
+        });
+
 	// データが足りてなければエラー
         var mes = "";
 
-        if (formData["HOKOKU_TANTOSHA_CD"] == "") {
+        if ( ! object["HOKOKU_TANTOSHA_CD"] ) {
           mes = mes + "担当者コードを入力してください\n";
         }
 
-        if (formData["HOKOKU_KAKUCHO_CD"] == "") {
+        if ( ! object["HOKOKU_KAKUCHO_CD"] ) {
           mes = mes + "拡張コードを入力してください\n";
         }
         
-        if (formData["UKETSUKE_NO"] == "") {
+        if ( ! object["UKETSUKE_NO"] ) {
           mes = mes + "受付番号を入力してください\n";
         }
 
-        if (formData[QR] == "") {
+        if ( ! object[QR] ) {
           mes = mes + "QRコードが読めていません\n";
         }
 
@@ -118,12 +124,6 @@
           alaert(mes);
           return;
         }
-
-        // JSONオブジェクトに変換
-        var object = {};
-        formData.forEach(function(value, key){
-          object[key] = value;
-        });
 
         // QR
         //  **アダプタラベル (QR1)**:  
